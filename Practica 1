@@ -1,0 +1,79 @@
+import java.util.*;
+import java.io.IOException;
+
+public class Practica1{
+static final int a = 5, b = 3;
+	public static void main(String[] args) throws IOException, InterruptedException{
+		Scanner sc = new Scanner(System.in);
+		int Opc = 0, i = 0, j = 0;
+		int [] Matricula = new int[a];
+		float [][] Calificaiones = new float[a][b];
+		float Promedio = 0, Cal = 0, PromA = 0;
+		String [] Nombre = new String[a];
+		do{
+			do{
+				System.out.print("\n\nPractica 1: Sistema basico de calificaciones\n\n");
+				System.out.print("1-Captura de nombre y calificaciones\n2-Imprimir calificaciones y promedio de calificaciones\n3-Imprimir calificaciones y calificacion mas baja\n4-Imprimir calificaciones y calificacion mas alta\n5-Salir");
+				System.out.print("\n\nIngrese la opcion: ");
+				Opc = sc.nextInt();
+				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+				}while(Opc < 1 || Opc > 5);
+				sc.nextLine();
+			switch(Opc){
+				case 1: for(i = 0; i < a; i++){
+						System.out.print("\nEscriba el nombre del alumno " + (i+1) + ": ");
+						Nombre[i] = sc.nextLine();
+						System.out.print("\nEscriba la matricula del alumno " + Nombre[i] + ": ");
+						Matricula[i] = sc.nextInt();
+						for(j = 0; j < b; j++){
+							System.out.print("\nCalificacion de practica " + (j+1) + ": ");
+							Calificaiones[i][j] = sc.nextFloat();
+						}
+						sc.nextLine();
+						new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					}
+					break;
+				case 2: for(i = 0; i < a; i++){
+						System.out.print("\n\nAlumno: " + Nombre[i] + "\nMatricula: " + Matricula[i]);
+						for(j = 0; j < b; j++){
+							Promedio += Calificaiones[i][j];
+							PromA += Calificaiones[i][j];
+						}
+						System.out.print("\nPromedio del alumno: " + (PromA / b));
+						PromA = 0;
+					}
+					Promedio /= (a * b);
+					System.out.print("\n\nPromedio del grupo: " + Promedio);
+					break;
+				case 3: Cal = 100;
+					for(i = 0; i < a; i++){
+						System.out.print("\n\nAlumno: " + Nombre[i] + "\nMatricula: " + Matricula[i]);
+							for(j = 0; j < b; j++){
+								System.out.printf("\nPractica " + (j+1) + ": " + Calificaiones[i][j]);
+								if(Calificaiones[i][j] <= Cal)
+									Cal = Calificaiones[i][j];
+							}
+						System.out.print("\n\nCalificacion mas baja: " + Cal + "\n");
+						Cal = 100;
+					}
+					break;
+				case 4: Cal = 0;
+					for(i = 0; i < a; i++){
+						System.out.print("\n\nAlumno: " + Nombre[i] + "\nMatricula: " + Matricula[i]);
+							for(j = 0; j < b; j++){
+								System.out.printf("\nPractica " + (j+1) + ": " + Calificaiones[i][j]);
+								if(Calificaiones[i][j] >= Cal)
+									Cal = Calificaiones[i][j];
+							}
+						System.out.print("\n\nCalificacion mas alta: " + Cal + "\n");
+						Cal = 0;
+					}
+					break;
+				default:
+					System.out.print("Programa finalizado...");
+			}
+			Promedio = 0;
+		}while(Opc != 5);
+		sc.close();
+	}
+}
