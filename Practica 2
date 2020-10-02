@@ -1,0 +1,61 @@
+import java.util.*;
+import java.io.IOException;
+
+public class Practica2{
+	static final int a = 10;
+	public static void main(String[] args) throws IOException, InterruptedException{
+		Scanner sc = new Scanner(System.in);
+		String Nom, Mat;
+		int id, i = 0;
+		float Cal;
+		Estudiante alumn[] = new Estudiante[a];
+
+		alumn[0] = new Estudiante("Becerra Peraza Erick Arturo","Matematicas",1262844,89);
+		alumn[1] = new Estudiante("Becerra Peraza Ivan Alejandro","Derecho",1678890,78);
+		alumn[2] = new Estudiante("Palacios Camacho Julia Michelle","Artes",1286726,100);
+		alumn[3] = new Estudiante("Osuna Hernandez Cesar Alexis","Programacion",1267765,66);
+		alumn[4] = new Estudiante("Basilio Zambrano Sebastian","Aeroespacial",1267756,34);
+
+		for(i = 5; i < a; i++){
+			System.out.print("\nEscriba el nombre del alumno " + (i+1) + ": ");
+				Nom = sc.nextLine();
+			System.out.print("\nEscriba la materia del alumno " + (i+1) + ": ");
+				Mat = sc.nextLine();
+			System.out.print("\nEscriba el ID del alumno " + (i+1) + ": ");
+				id = sc.nextInt();
+			System.out.print("\nEscriba la calificacion del alumno " + (i+1) + ": ");
+				Cal = sc.nextFloat();
+			sc.nextLine();
+			alumn[i] = new Estudiante(Nom,Mat,id,Cal);
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		}
+		for(i = 0; i < a; i++)
+			alumn[i].imprimir();
+	}
+}
+
+
+import java.util.*;
+
+public class Estudiante{
+	String nombre, materia, estado;
+	int id;
+	float calificacion;
+	public Estudiante(String nombre, String materia, int id, float calificacion){
+		this.nombre = nombre;
+		this.materia = materia;
+		this.id = id;
+		this.calificacion = calificacion;
+		if(calificacion >= 60)
+			estado = "Aprobado";
+		else
+			estado = "Reprobado";
+	}
+	public void imprimir(){
+		System.out.print("\nNombre: " + nombre);
+		System.out.print("\nID: " + id);
+		System.out.print("\nMateria: " + materia);
+		System.out.print("\nCalificacion: " + calificacion);
+		System.out.print("\nEstado: " + estado + "\n\n");
+	}
+}
