@@ -1,0 +1,184 @@
+import java.util.*;
+import java.io.IOException;
+import java.util.Random;
+
+public class Practica3{
+	public static void main(String[] args) throws IOException, InterruptedException{
+		Scanner sc = new Scanner(System.in);
+		int opc = 0;
+		String nombre = "", paterno = "", materno = "", fecha = "", sexo = "", entidad = "";
+		CURP obj1[] = new CURP[1];
+		RFC obj2[] = new RFC[1];
+		AMBAS obj3[] = new AMBAS[1];
+		do{
+			do{
+				System.out.print("\n\nMenu de opciones:\n1)Mostrar CURP\n2)Mostrar RFC\n3)Ambas\n4)Salir\n\nIngrese la opcion a realizar:");
+				opc = sc.nextInt();
+				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+			}while(opc < 1 && opc > 4);
+			sc.nextLine();
+			switch(opc){
+				case 1: System.out.print("\nEscriba el nombre: ");
+						nombre = sc.nextLine();
+					System.out.print("\nEscriba el apellido parterno: ");
+						paterno = sc.nextLine();
+					System.out.print("\nEscriba el apellido materno: ");
+						materno = sc.nextLine();
+					System.out.print("\nEscriba la fecha de nacimiento (AnoMesDia) en numero: ");
+						fecha = sc.nextLine();
+					System.out.print("\nEscriba el sexo (H/M): ");
+						sexo = sc.nextLine();
+					System.out.print("\nEscriba la entidad federativa de nacimiento: ");
+						entidad = sc.nextLine();
+					new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					obj1[0] = new CURP(nombre, paterno, materno, fecha, sexo, entidad);
+					obj1[0].imprimircurp();
+					break;
+				case 2: System.out.print("\nEscriba el nombre: ");
+						nombre = sc.nextLine();
+					System.out.print("\nEscriba el apellido parterno: ");
+						paterno = sc.nextLine();
+					System.out.print("\nEscriba el apellido materno: ");
+						materno = sc.nextLine();
+					System.out.print("\nEscriba la fecha de nacimiento (ano / mes / dia): ");
+						fecha = sc.nextLine();
+					new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					obj2[0] = new RFC(nombre, paterno, materno, fecha);
+					obj2[0].imprimirrfc();
+					break;
+				case 3: System.out.print("\nEscriba el nombre: ");
+						nombre = sc.nextLine();
+					System.out.print("\nEscriba el apellido parterno: ");
+						paterno = sc.nextLine();
+					System.out.print("\nEscriba el apellido materno: ");
+						materno = sc.nextLine();
+					System.out.print("\nEscriba la fecha de nacimiento (ano / mes / dia): ");
+						fecha = sc.nextLine();
+					System.out.print("\nEscriba el sexo (H/M): ");
+						sexo = sc.nextLine();
+					System.out.print("\nEscriba el estado de nacimiento: ");
+						entidad = sc.nextLine();
+					new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					obj3[0] = new AMBAS(nombre, paterno, materno, fecha, sexo, entidad);
+					obj3[0].imprimirambas();
+					break;
+				default:
+					System.out.print("Programa finalizado...");
+			}
+		}while(opc != 4);
+	sc.close();
+	}
+}
+
+public class CURP{
+	char p2 = '\0', p3 = '\0', p5 = '\0';
+	char [] p1 = new char[2];
+	char [] p6 = new char[2];
+	char [] p7 = new char[3];
+	String p4 = "";
+	int i = 0; 
+	int [] p8 = new int[2];
+	Random r = new Random();
+	public CURP(String nombre, String paterno, String materno, String fecha, String sexo, String entidad){
+		for(i = 0; i < 2; i++){
+			p1[i] = paterno.charAt(i);
+			p6[i] = entidad.charAt(i);
+			p8[i] = r.nextInt(10);
+
+		}
+		p2 = materno.charAt(0);
+		p3 = nombre.charAt(0);
+		p4 = fecha;
+		p5 = sexo.charAt(0);
+		i = 1;
+		do{
+			p7[0] = paterno.charAt(i);
+			i++;
+		}while(p7[0] == 'a' || p7[0] == 'e' || p7[0] == 'i' || p7[0] == 'o' || p7[0] == 'u');
+		i = 1;
+		do{
+			p7[1] = materno.charAt(i);
+			i++;
+		}while(p7[1] == 'a' || p7[1] == 'e' || p7[1] == 'i' || p7[1] == 'o' || p7[1] == 'u');
+		i = 1;
+		do{
+			p7[2] = nombre.charAt(i);
+			i++;
+		}while(p7[2] == 'a' || p7[2] == 'e' || p7[2] == 'i' || p7[2] == 'o' || p7[2] == 'u');
+	}
+	public void imprimircurp(){
+		System.out.print("El CURP es: " + p1[0] + (p1[1] = Character.toUpperCase(p1[1])) + p2 + p3 + p4 + p5 + p6[0] + (p6[1] = Character.toUpperCase(p6[1])) + (p7[0] = Character.toUpperCase(p7[0]))+ (p7[1] = Character.toUpperCase(p7[1])) + (p7[2] = Character.toUpperCase(p7[2])) + p8[0] + p8[1]);
+	}
+}
+
+public class RFC{
+	char [] p1 = new char[2];
+	char p2, p3;
+	String p4;
+	int [] p5 = new int[3];
+	int i = 1;
+	Random r = new Random();
+	public RFC(String nombre, String paterno, String materno, String fecha){
+		p1[0] = paterno.charAt(0);
+		do{
+			p1[1] = paterno.charAt(i);
+			i++;
+		}while(p1[1] != 'a' && p1[1] != 'e' && p1[1] != 'i' && p1[1] != 'o' && p1[1] != 'u');
+		p2 = materno.charAt(0);
+		p3 = nombre.charAt(0);
+		p4 = fecha;
+		for(i = 0; i < 3; i++)
+			p5[i] = r.nextInt(10);
+	}
+	public void imprimirrfc(){
+		System.out.print("El RFC es: " + p1[0] + (p1[1] = Character.toUpperCase(p1[1])) + p2 + p3 + p4 + p5[0] + p5[1] + p5[2]);
+	}
+}
+
+public class AMBAS{
+	char p2, p3, p5;
+	char [] p1 = new char[3];
+	char [] p6 = new char[2];
+	char [] p7 = new char[3];
+	String p4;
+	int i = 0; 
+	int [] p8 = new int[3];
+	Random r = new Random();
+	public AMBAS(String nombre, String paterno, String materno, String fecha, String sexo, String entidad){
+		for(i = 0; i < 2; i++){
+			p1[i] = paterno.charAt(i);
+			p6[i] = entidad.charAt(i);
+			p8[i] = r.nextInt(10);
+
+		}
+		p8[2] = r.nextInt(10);
+		p2 = materno.charAt(0);
+		p3 = nombre.charAt(0);
+		p4 = fecha;
+		p5 = sexo.charAt(0);
+		i = 1;
+		do{
+			p7[0] = paterno.charAt(i);
+			i++;
+		}while(p7[0] == 'a' || p7[0] == 'e' || p7[0] == 'i' || p7[0] == 'o' || p7[0] == 'u');
+		i = 1;
+		do{
+			p7[1] = materno.charAt(i);
+			i++;
+		}while(p7[1] == 'a' || p7[1] == 'e' || p7[1] == 'i' || p7[1] == 'o' || p7[1] == 'u');
+		i = 1;
+		do{
+			p7[2] = nombre.charAt(i);
+			i++;
+		}while(p7[2] == 'a' || p7[2] == 'e' || p7[2] == 'i' || p7[2] == 'o' || p7[2] == 'u');
+		i = 1;
+		do{
+			p1[2] = paterno.charAt(i);
+			i++;
+		}while(p1[2] != 'a' && p1[2] != 'e' && p1[2] != 'i' && p1[2] != 'o' && p1[2] != 'u');
+	}
+	public void imprimirambas(){
+		System.out.print("El CURP es: " + p1[0] + (p1[1] = Character.toUpperCase(p1[1])) + p2 + p3 + p4 + p5 + p6[0] + (p6[1] = Character.toUpperCase(p6[1])) + (p7[0] = Character.toUpperCase(p7[0]))+ (p7[1] = Character.toUpperCase(p7[1])) + (p7[2] = Character.toUpperCase(p7[2])) + p8[0] + p8[1]);
+		System.out.print("\nEl RFC es: " + p1[0] + (p1[2] = Character.toUpperCase(p1[1])) + p2 + p3 + p4 + p8[0] + p8[1] + p8[2]);
+	}
+}
