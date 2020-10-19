@@ -1,0 +1,51 @@
+import java.util.*;
+import java.io.IOException;
+
+public class Practica4{
+	public static void main(String[] args) throws IOException, InterruptedException{
+		Scanner sc = new Scanner(System.in);
+		String name;
+		int opc = 0;
+		Ave bird[] = new Ave[3];
+		bird[0] = new Ave("RED", "Empuja cosas", "Rojo", "Es el pajaro famoso y principal del juego, rompe madera pero no puede romper piedra");
+		bird[1] = new Ave("CHUCK", "Acelera a velocidades altas", "Amarillo", "Este carga contra las estructuras causando mayor daño y más resistente a la madera");
+		bird[2] = new Ave("BOMB", "Estalla", "Negro", "Este explota cuando se le ordena o a los pocos segundos de entrar en contacto con alguna estructura o cerdo");
+		do{
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+			System.out.print("Que pajaro desea ver:\n1-Red\n2-Chuck\n3-Bomb\n\nOpcion: ");
+			opc = sc.nextInt();
+		}while(opc < 1 && opc > 3);
+		opc -= 1;
+		bird[opc].mostrarInformacion();
+		sc.close();
+	}
+}
+
+public class Pajaro{
+	String nombre, poder, color;
+	public Pajaro(String nombre, String poder, String color){
+		this.nombre = nombre;
+		this.poder = poder;
+		this.color = color;
+	}
+	public String getNombre(){
+		return nombre;
+	}
+	public String getPoder(){
+		return poder;
+	}
+	public String getColor(){
+		return color;
+	}
+}
+
+public class Ave extends Pajaro{
+	String descripcion;
+	public Ave(String nombre, String poder, String color, String descripcion){
+		super(nombre, poder, color);
+		this.descripcion = descripcion;
+	}
+	public void mostrarInformacion(){
+		System.out.println("Nombre del personaje: " + nombre + "\nPoder del personaje: " + poder + "\nColor del personaje: " + color + "\nDescripcion del personaje: " + descripcion);
+	}
+}
