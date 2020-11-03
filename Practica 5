@@ -1,0 +1,113 @@
+import java.util.*;
+import java.io.IOException;
+
+public class Practica5{
+	public static void main(String[] args) throws IOException, InterruptedException{
+		Scanner sc = new Scanner(System.in);
+		String nombre;
+		int opc = 0, opc2 = 0, pin = 0, i = 0, n = 0;
+		float saldo = 0, cantidad = 0;
+		BANCO persona[] = new BANCO[5];
+		do{
+			do{
+				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+				System.out.print("Banco\n\nLas opciones:\n1-Crear una nueva cuenta\n2-Acceder a una cuenta ya existente\n3-Salir\n\nOpcion:");
+				opc = sc.nextInt();
+			}while(opc < 1 && opc > 3);
+			switch(opc){
+				case 1: new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					sc.nextLine();
+					System.out.print("Ingrese su nombre: ");
+						nombre = sc.nextLine();
+					System.out.print("\nIngrese su deposito inicial: ");
+						saldo = sc.nextFloat();
+					System.out.print("\nIngrese su PIN: ");
+						pin = sc.nextInt();
+					persona[n] = new BANCO(nombre, saldo, pin);
+					System.out.print("\n\nEstos son sus datos:");
+					persona[n].mostrarDatos();
+					sc.nextLine();
+					System.out.print("\n\nPreione ENTER para continuar...");
+					sc.nextLine();
+					n++;
+					break;
+				case 2: new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					System.out.print("Ingrese su PIN: ");
+					pin = sc.nextInt();
+					while(pin != persona[i].darPin())
+						i++;
+					do{
+						new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+						System.out.print("Banco\n\nLas opciones:\n1-Deposito\n2-Retiro\n\nOpcion:");
+						opc2 = sc.nextInt();
+					}while(opc < 1 && opc > 2);
+					if(opc2 == 1){
+						do{
+							new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+							System.out.print("Ingrese la cantidad a depositar: ");
+							cantidad = sc.nextFloat();
+						}while(cantidad < 0);
+						persona[i].depositar(cantidad);
+					}
+					if(opc2 == 2){
+						do{
+							new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+							System.out.print("Ingrese la cantidad a retirar: ");
+							cantidad = sc.nextFloat();
+						}while(cantidad < 0);
+						persona[i].retiro(cantidad);
+					}
+					System.out.print("\n\nEstos son sus datos:");
+					persona[i].mostrarDatos();
+					sc.nextLine();
+					System.out.print("\n\nPreione ENTER para continuar...");
+					sc.nextLine();
+					break;
+				default: new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					 System.out.print("\nPrograma finalizado...");
+			}
+		}while(opc != 3);
+		sc.close();
+	}
+}
+
+public class BANCO extends CUENTA{
+	public BANCO(String nombre, float saldo, int pin){
+		super(nombre, saldo, pin);
+	}
+	public void mostrarDatos(){
+		System.out.print("\n\nNombre: " + nombre + "\nSaldo actual: " + saldo + "\nPIN: " + pin);
+	}
+	public int darPin(){
+		return pin;
+	}
+	public void depositar(float sal){
+		saldo += sal;
+	}
+	public void retiro(float sal){
+		if(sal > saldo)
+			System.out.print("\nOpercaion no valida...");
+		if(sal <= saldo)
+			saldo -= sal;
+	}
+}
+
+public class CUENTA{
+	protected String nombre;
+	protected float saldo;
+	protected int pin;
+	public CUENTA(String nombre, float saldo, int pin){
+		this.nombre  = nombre;
+		this.saldo  = saldo;
+		this.pin  = pin;
+	}
+	public String getNombre(){
+		return nombre;
+	}
+	public float getSaldo(){
+		return saldo;
+	}
+	public int getPin(){
+		return pin;
+	}
+}
