@@ -1,0 +1,293 @@
+import java.util.*;
+import java.io.IOException;
+
+public class Practica6{
+	public static void main(String[] args) throws IOException, InterruptedException{
+		Scanner sc = new Scanner(System.in);
+		VETERINARIO vet[] = new VETERINARIO [1];
+		vet[0] = new VETERINARIO("Erick", 100000);
+		ZOO animal[] = new ZOO [10];
+		String familia, habitad, nombre, capacidadnadar, tamano, ovimami, carherovn, veneno, agua, vuelo;
+		int opc = 0, opc2 = 0, opc3 = 0, cont = 0, edad = 0, numpatas = 0, numaletas = 0;
+		float peso = 0, velocidadcorriendo = 0, velocidadnadando = 0, velocidadvuelo = 0, precion = 0;
+		do{
+			do{
+				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+				System.out.print("ZOOLOGICO\n\nOpciones:\n1-Agregar animal\n2-Borrar animal\n3-Mostrar Lista de animales disponibles\n4-Acciones del veterinario\n5-Salir\n\nOpcion: ");
+				opc = sc.nextInt();
+			}while(opc < 1 && opc > 5);
+			sc.nextLine();
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+			switch(opc){
+				case 1: System.out.print("Agregar animal:\n1-Terrestre\n2-Marino\n3-Aereo\n\nOpcion: ");
+					opc2 = sc.nextInt();
+					new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					System.out.print("Ingrese la familia: ");
+						sc.nextLine();
+						familia = sc.nextLine();
+					System.out.print("\nIngrese su habitad: ");
+						habitad = sc.nextLine();
+					System.out.print("\nIngrese el nombre: ");
+						nombre = sc.nextLine();
+					System.out.print("\nIngrese el peso: ");
+						peso = sc.nextFloat();
+					System.out.print("\nIngerse la edad: ");
+						edad = sc.nextInt();
+					System.out.print("\nTienen capacidad de nadar (S/N): ");
+						sc.nextLine();
+						capacidadnadar = sc.nextLine();
+					System.out.print("\nEs de tamano Chico/Medio/Grande: ");
+						tamano = sc.nextLine();
+					System.out.print("\nIngrese si es Mamifero/Oviparo: ");
+						ovimami = sc.nextLine();
+					System.out.print("\nIngrese si es Carnivoro/Hervivoro/Ovnivoro: ");
+						carherovn = sc.nextLine();
+					if(opc2 == 1){
+						System.out.print("\nIngrese el numero de patas: ");
+							numpatas = sc.nextInt();
+						System.out.print("\nTiene veneno (S/N): ");
+							sc.nextLine();
+							veneno = sc.nextLine();
+						System.out.print("\nMaxima velocidad corriendo: ");
+							velocidadcorriendo = sc.nextFloat();
+						animal[cont] = new TERRESTRE(familia, habitad, nombre, peso, edad, capacidadnadar, tamano, ovimami, carherovn, numpatas, veneno, velocidadcorriendo);
+						}
+					if(opc2 == 2){
+						System.out.print("\nA que tipo de agua pertenecen Dulce/Salada: ");
+							agua = sc.nextLine();
+						System.out.print("\nIngrese la precion a la que se encuentra: ");
+							precion = sc.nextFloat();
+						System.out.print("\nIngrese el numero de aletas: ");
+							numaletas = sc.nextInt();
+						System.out.print("\nMaxima velocidad nadando: ");
+							velocidadnadando = sc.nextFloat();
+						animal[cont] = new MARINOS(familia, habitad, nombre, peso, edad, capacidadnadar, tamano, ovimami, carherovn, agua, precion, numaletas, velocidadnadando);
+						}
+					if(opc2 == 3){
+						System.out.print("\nEl ave vuela (S/N): ");
+							vuelo = sc.nextLine();
+						System.out.print("\nMacma velocidad de vuelo: ");
+							velocidadvuelo = sc.nextFloat();
+						animal[cont] = new AEREOS(familia, habitad, nombre, peso, edad, capacidadnadar, tamano, ovimami, carherovn, velocidadvuelo, vuelo);
+						}
+					cont++;
+					break;
+				case 2: System.out.print("Quitar animales:\n1-Terrestres\n2-Marinos\n3-Aereos\n\nOpcion: ");
+					opc2 = sc.nextInt();
+					new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					if(opc2 == 1){
+						for(ZOO a: animal)
+							if(a instanceof TERRESTRE)
+								((TERRESTRE) a).borrar();
+					}
+					if(opc2 == 2){
+						for(ZOO a: animal)
+							if(a instanceof MARINOS)
+								((MARINOS) a).borrar();
+					}
+					if(opc2 == 3){
+						for(ZOO a: animal)
+							if(a instanceof AEREOS)
+								((AEREOS) a).borrar();
+					}
+					break;
+				case 3: for(ZOO a: animal){
+						if(a instanceof TERRESTRE)
+							((TERRESTRE) a).mostraranimal();
+						if(a instanceof MARINOS)
+							((MARINOS) a).mostraranimal();
+						if(a instanceof AEREOS)
+							((AEREOS) a).mostraranimal();
+					}
+					System.out.print("\n\nPresione ENTER para continuar...");
+					sc.nextLine();
+					break;
+				case 4: System.out.print("Eliga el tipo de veterinario:\n1-Terrestres\n2-Marinos\n3-Aereos\n\nOpcion: ");
+					opc2 = sc.nextInt();
+					new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					System.out.print("Eliga la opcion:\n1-Vacunar\n2-Entrenar\n\nOpcion: ");
+					opc3 = sc.nextInt();
+					new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+					if(opc2 == 1){
+						if(opc3 == 1)
+							for(ZOO a: animal){
+								if(a instanceof TERRESTRE)
+									vet[0].vacunarT(a);
+							}
+						if(opc3 == 2)
+							for(ZOO a: animal){
+								if(a instanceof TERRESTRE)
+									vet[0].entrenarT(a);
+							}
+					}
+					if(opc2 == 2){
+							for(ZOO a: animal){
+								if(a instanceof MARINOS)
+									vet[0].vacunarM(a);
+							}
+						if(opc3 == 2)
+							for(ZOO a: animal){
+								if(a instanceof MARINOS)
+									vet[0].entrenarM(a);
+							}
+							
+					}
+					if(opc2 == 3){
+							for(ZOO a: animal){
+								if(a instanceof AEREOS)
+									vet[0].vacunarA(a);
+							}
+						if(opc3 == 2)
+							for(ZOO a: animal){
+								if(a instanceof AEREOS)
+									vet[0].entrenarA(a);
+							}	
+					}
+					System.out.print("\n\nPresione ENTER para continuar...");
+					sc.nextLine();
+					break;
+				default:System.out.printf("Programa finalizado...");
+			}
+		}while(opc != 5);
+		sc.close();
+	}
+}
+public class ZOO{
+	protected String familia, habitad, nombre, capacidadnadar, tamano, ovimami, carherovn;
+	protected int edad;
+	protected float peso;
+	protected ZOO(String familia, String habitad, String nombre, float peso, int edad, String capacidadnadar, String tamano, String ovimami, String carherovn){
+		this.familia = familia;
+		this.habitad = habitad;
+		this.nombre = nombre;
+		this.capacidadnadar = capacidadnadar;
+		this.tamano = tamano;
+		this.ovimami = ovimami;
+		this.carherovn = carherovn;
+		this.edad = edad;
+		this.peso = peso;
+	}
+	protected void mostraranimal(){
+		System.out.print("\n\nPertenece a la familia: " + familia + "\nSu habitad es: " + habitad + "\nSe llama: " + nombre + "\nTiene capacidad de nadar: " + capacidadnadar + "\nEs de tamano: " + tamano + "\nEs: " + ovimami + "\nSu alimentacion es: " + carherovn + "\nTiene de edad: " + edad + "\nPesa: " + peso);
+	}
+	protected void borrar(){
+		familia = " ";
+		habitad = " ";
+		nombre = " ";
+		capacidadnadar = " ";
+		tamano = " ";
+		ovimami = " ";
+		carherovn = " ";
+		edad = 0;
+		peso = 0;
+	}
+}
+public class VETERINARIO{
+	String name;
+	float salario;
+	public VETERINARIO(String name, float salario){
+		this.name = name;
+		this.salario = salario;
+	}
+	public void vacunarT(ZOO animal){
+		System.out.print("\nLos animales terrestres fueron vacunados");
+	}
+	public void vacunarM(ZOO animal){
+		System.out.print("\nLos animales marinos fueron vacunados");
+	}
+	public void vacunarA(ZOO animal){
+		System.out.print("\nLos animales aereos fueron vacunados");
+	}
+	public void entrenarT(ZOO animal){
+		System.out.print("\nLos animales terrestres fueron entrenados");
+	}
+	public void entrenarM(ZOO animal){
+		System.out.print("\nLos animales marinos fueron entrenados");
+	}
+	public void entrenarA(ZOO animal){
+		System.out.print("\nLos animales aereos fueron entrenados");
+	}
+}
+public class TERRESTRE extends ZOO{
+	public int numpatas;
+	public String veneno;
+	public float velocidadcorriendo;
+	public TERRESTRE(String familia, String habitad, String nombre, float peso, int edad, String capacidadnadar, String tamano, String ovimami, String carherovn, int numpatas, String veneno, float velocidadcorriendo){
+		super(familia, habitad, nombre, peso, edad, capacidadnadar, tamano, ovimami, carherovn);
+		this.numpatas = numpatas;
+		this.veneno = veneno;
+		this.velocidadcorriendo = velocidadcorriendo;
+	}
+	public void mostraranimal(){
+		System.out.print("\n\nPertenece a la familia: " + familia + "\nSu habitad es: " + habitad + "\nSe llama: " + nombre + "\nTiene capacidad de nadar: " + capacidadnadar + "\nEs de tamano: " + tamano + "\nEs: " + ovimami + "\nSu alimentacion es: " + carherovn + "\nTiene de edad: " + edad + "\nPesa: " + peso + "\nPatas que tiene: " + numpatas + "\nTiene veneno: " + veneno + "\nSu velocidad corriendo es: " + velocidadcorriendo);
+	}
+	public void borrar(){
+		familia = " ";
+		habitad = " ";
+		nombre = " ";
+		capacidadnadar = " ";
+		tamano = " ";
+		ovimami = " ";
+		carherovn = " ";
+		edad = 0;
+		peso = 0;
+		numpatas = 0;
+		veneno = " ";
+		velocidadcorriendo = 0;
+	}
+}
+public class MARINOS extends ZOO{
+	public String aguas;
+	public int numaletas;
+	public float precion, velocidadnadando;
+	public MARINOS(String familia, String habitad, String nombre, float peso, int edad, String capacidadnadar, String tamano, String ovimami, String carherovn, String aguas, float precion, int numaletas, float velocidadnadando){
+		super(familia, habitad, nombre, peso, edad, capacidadnadar, tamano, ovimami, carherovn);
+		this.aguas = aguas;
+		this.numaletas = numaletas;
+		this.precion = precion;
+		this.velocidadnadando = velocidadnadando;
+	}
+	public void mostraranimal(){
+		System.out.print("\n\nPertenece a la familia: " + familia + "\nSu habitad es: " + habitad + "\nSe llama: " + nombre + "\nTiene capacidad de nadar: " + capacidadnadar + "\nEs de tamano: " + tamano + "\nEs: " + ovimami + "\nSu alimentacion es: " + carherovn + "\nTiene de edad: " + edad + "\nPesa: " + peso + "\nAletas que tiene: " + numaletas + "\nAguas a las que pertenece: " + aguas + "\nPrecion que soporta: " + precion + "\nSu velocidad nadando es: " + velocidadnadando);
+	}
+	public void borrar(){
+		familia = " ";
+		habitad = " ";
+		nombre = " ";
+		capacidadnadar = " ";
+		tamano = " ";
+		ovimami = " ";
+		carherovn = " ";
+		edad = 0;
+		peso = 0;
+		numaletas = 0;
+		aguas = " ";
+		velocidadnadando = 0;
+		precion = 0;
+	}
+}
+public class AEREOS extends ZOO{
+	public float velocidadvuelo;
+	public String vuelo;
+	public AEREOS(String familia, String habitad, String nombre, float peso, int edad, String capacidadnadar, String tamano, String ovimami, String carherovn, float velocidadvuelo, String vuelo){
+		super(familia, habitad, nombre, peso, edad, capacidadnadar, tamano, ovimami, carherovn);
+		this.velocidadvuelo = velocidadvuelo;
+		this.vuelo = vuelo;
+	}
+	public void mostraranimal(){
+		System.out.print("\n\nPertenece a la familia: " + familia + "\nSu habitad es: " + habitad + "\nSe llama: " + nombre + "\nTiene capacidad de nadar: " + capacidadnadar + "\nEs de tamano: " + tamano + "\nEs: " + ovimami + "\nSu alimentacion es: " + carherovn + "\nTiene de edad: " + edad + "\nPesa: " + peso + "\nEsta ave vuela: " + vuelo + "\nSu velocidad volando es: " + velocidadvuelo);
+	}
+	public void borrar(){
+		familia = " ";
+		habitad = " ";
+		nombre = " ";
+		capacidadnadar = " ";
+		tamano = " ";
+		ovimami = " ";
+		carherovn = " ";
+		edad = 0;
+		peso = 0;
+		velocidadvuelo = 0;
+		vuelo = " ";
+	}
+}
