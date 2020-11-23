@@ -1,0 +1,356 @@
+import java.util.*;
+
+class Practica7{
+    public static void main(String[] args) {
+	Scanner sc = new Scanner(System.in);
+        Robot[] robot = new Robot[3];
+        robot[0] = new RobotCortadordeCosas("Erick", 100, 1, 0, 1, 20, true);
+        robot[1] = new RobotCalentar("Sebastian", 100, 2, 0);
+        robot[2] = new RobotServirPlatillos("Cesar", 100, 3, 0);
+        String respuesta;
+        int contador = 0, opc = 0;
+        do{
+            Menu.MenuP();
+	    System.out.print("Ingrese la opcion: ");
+            opc = sc.nextInt();
+            switch(opc){
+                case 1:
+                    if(SeleccionDeAcciones(robot[0], contador) > 0)
+                        contador++;
+                    else{
+                        contador = 0;
+                    }
+                    robot[0].bateria(10);
+                    robot[0].setUtilidad(-1);
+                    if(robot[0].getUtilidad() == 0){
+                        System.out.print("\nOh se rompio, tomare uno nuevo...");
+                        robot[0].setUtilidad(20);
+                    }
+                    System.out.println("Porcentaje de carga: " + robot[0].getBateria());        
+                    if(robot[0].getBateria() == 0){
+                        System.out.print("\nSe termino la bateria, es necesario recargarla...");
+			respuesta = sc.nextLine();
+                        if(respuesta == "Y"){
+                            robot[0].cargarBateria();
+                        }
+                        break;
+                    }       
+                    break;
+                case 2:
+                    if(SeleccionDeAcciones(robot[1], contador) > 0)
+                        contador++;
+                    else{
+                        contador = 0;
+                    }
+                    robot[1].bateria(10);   
+                    System.out.print("\nPorcentaje de carga: " + robot[1].getBateria());              
+                    if(robot[1].getBateria() == 0){
+                        System.out.print("\nSe termino la bateria, es necesario recargarla...\nQuiere cargarlo? Y/N\n");
+			respuesta = sc.nextLine();
+                        if(respuesta == "Y"){
+                            robot[1].cargarBateria();
+                        }
+                        break;
+                    }                  
+                    break;
+                case 3:
+                    if(SeleccionDeAcciones(robot[2], contador) > 0)
+                        contador++;
+                    else{
+                        contador = 0;
+		    }
+                    robot[2].bateria(10); 
+                    System.out.println("Porcentaje de carga: " + robot[2].getBateria());        
+                    if(robot[2].getBateria() == 0){
+                        System.out.print("\nSe termino la bateria, es necesario recargarla...\nQuiere cargarlo? Y/N\n");
+			respuesta = sc.nextLine();
+                        if(respuesta == "Y"){
+                            robot[2].cargarBateria();
+                        }
+                        break;
+                    } 
+                    break;
+                case 4:
+                    System.exit(0);    
+                    break;
+                default:
+                    break;
+            }
+            if(contador == 0){
+                System.out.print("\nHubo un error, se tendra que inicir desde el principio...");
+            }
+	    System.out.print("\nDesea continuar? Y/N");
+            respuesta = sc.nextLine();
+        }while(respuesta != "N");
+        if(contador > 4){
+            System.out.println("Se ha logrado cocinar el platillo...");
+        }
+    }
+    public static int SeleccionDeAcciones(Robot robot, int contador){
+	Scanner sc = new Scanner(System.in);
+	int opc = 0;
+        Menu.MenuDeAcciones();
+	System.out.print("\nIngrese la opcion: ");
+        opc = sc.nextInt();
+        switch(opc){
+            case 1:
+                if(robot.cortarCarne()){
+                    contador++;
+		}
+                else{
+                    contador = 0;
+		}
+                break;
+            case 2:
+                if(robot.cortarVegetales()){
+                    contador++;
+		}
+		else{
+                    contador = 0;
+		}
+                break;
+            case 3:
+                if(robot.calentarComida()){
+                    contador++;
+		}
+                else{
+                    contador = 0;
+		}
+                break;
+            case 4:
+                if(robot.servir()){
+                    contador++;
+		}
+                else{
+                    contador = 0;
+		}
+                break;
+            default:
+                break;
+        }
+        robot.accionPasada(opc);
+        return contador;
+    }
+}
+
+public class Menu {
+    public static void MenuP(){
+        System.out.println("\n\n\n\n\n\n\n\n\n\nMenu de opciones:\n\n1-Robot que corta cosas\n2-Robot que cocina cosas\n3-Robot que sirve los platillos\n4-Salir");
+    }
+
+    public static void MenuDeAcciones(){
+        System.out.println("\n\n\n\n\n\n\n\n\n\nMenu de manejo de robots:\n\n1-Robot que corta (carne)\n2-Robot que corta (verduras)\n3-Robot que cocina cosas\n4-Robot que sirve platillos\n5-Salir");
+    }
+}
+
+public interface Interface{
+    public void nombre(String nombre);
+    public void bateria(int numero);
+    public void id(int numero);
+    public void accionPasada(int numero);
+}
+
+public abstract class Robot implements Interface{
+    String nombre;
+    float porcentajedebateria;
+    int idnumero;
+    int accion;
+    public Robot(String nombre, float porcentajedebateria, int idnumero, int accion){
+        this.nombre = nombre;
+        this.porcentajedebateria = porcentajedebateria;
+        this.idnumero = idnumero;
+        this.accion = accion;
+    }
+    protected abstract boolean cortarCarne();
+    protected abstract boolean cortarVegetales();
+    protected abstract boolean calentarComida();
+    protected abstract boolean servir();
+    protected abstract float getBateria();
+    protected abstract void cargarBateria();
+    protected abstract void setUtilidad(int numero);
+    protected abstract int getUtilidad();
+    public void nombre(){}
+    public void bateria(){}
+    public void id(){}
+    public void accionPasada(){}
+}
+
+public class RobotCortadordeCosas extends Robot{
+    int velocidadCorte;
+    public int utilidad;
+    boolean ed = true;
+    public RobotCortadordeCosas(String nombre, float porcentajedebateria, int idnumero, int accion, int velocidadCorte, int utilidad, boolean ed){
+        super(nombre, porcentajedebateria, idnumero, accion);
+        this.velocidadCorte = velocidadCorte;
+        this.utilidad = utilidad;
+        this.ed = ed;
+    }
+    public void setUtilidad(int resta){
+        utilidad += resta;
+    }
+    @Override
+    protected boolean cortarCarne(){ 
+        System.out.print("\nSe estan cortando la carnes...");
+        return true;
+    }
+    @Override
+    protected boolean cortarVegetales(){
+        System.out.print("\nSe estan cortando los vegetales...");
+        return true;
+    }
+    @Override
+    protected boolean calentarComida(){
+        System.out.print("\nEsto esta muy caliente...");
+        return false;
+    }
+    @Override
+    protected boolean servir(){
+        System.out.println("Se ha caido...");
+        return false;
+    }
+    @Override
+    public void accionPasada(int numero){
+        accion = numero;
+    }
+    @Override
+    public void bateria(int descarga){
+        porcentajedebateria -= descarga;
+    }
+    @Override
+    public void nombre(String nombre){
+        this.nombre = nombre;
+    }
+    @Override
+    public void id(int numero){
+        idnumero = numero;
+    }
+    public float getBateria(){
+        return porcentajedebateria;
+    }
+    public int getUtilidad(){
+        return utilidad;
+    }
+    @Override
+    protected void cargarBateria(){
+        for (int i = 0; i < 10; i++) 
+            System.out.print("\nCargando..." + (porcentajedebateria += 10) + "%");
+        System.out.print("\nCarga compelta...");
+    }
+}
+
+public class RobotCalentar extends Robot{
+    public RobotCalentar(String nombre, float porcentajedebateria, int idnumero, int accion){
+        super(nombre, porcentajedebateria, idnumero, accion);
+    }
+    @Override
+    protected boolean cortarCarne(){ 
+        System.out.print("\nNo sirvo para esto...");
+        return false;
+    }
+    @Override
+    protected boolean cortarVegetales(){
+        System.out.print("\nNo sirvo para esto...");
+        return false;
+    }
+    @Override
+    protected boolean calentarComida(){
+        System.out.print("\nEsta en proceso...");
+        return true;
+    }
+    @Override
+    protected boolean servir(){
+        System.out.print("\nNo sirvo para esto...");
+        return false;
+    }
+    @Override
+    public void accionPasada(int numero){
+        accion = numero;
+    }
+    @Override
+    public void bateria(int descarga){
+        porcentajedebateria -= descarga;
+    }
+    @Override
+    public void nombre(String nombre){
+        this.nombre = nombre;
+    }
+    @Override
+    public void id(int numero){
+        idnumero = numero;
+    }
+    public float getBateria(){
+        return porcentajedebateria;
+    }
+    @Override
+    protected void cargarBateria(){
+        for (int i = 0; i < 10; i++) 
+            System.out.print("\nCargando..." + (porcentajedebateria += 10) + "%");
+        System.out.print("\nCarga compelta...");
+    }
+    @Override
+    protected void setUtilidad(int numero){
+    }
+    @Override
+    protected int getUtilidad(){
+        return 0;
+    }
+}
+
+public class RobotServirPlatillos extends Robot{
+    public RobotServirPlatillos(String nombre, float porcentajedebateria, int idnumero, int accion){
+        super(nombre, porcentajedebateria, idnumero, accion);
+    }
+    @Override
+    protected boolean cortarCarne(){ 
+        System.out.print("\nNo sirvo para esto...");
+        return false;
+    }
+    @Override
+    protected boolean cortarVegetales(){
+        System.out.print("\nNo sirvo para esto...");
+        return false;
+    }
+    @Override
+    protected boolean calentarComida(){
+        System.out.print("\nNo sirvo para esto...");
+        return false;
+    }
+
+    @Override
+    protected boolean servir(){
+        System.out.print("\nEl platillo fue servido...");
+        return true;
+    }
+    @Override
+    public void accionPasada(int numero){
+        accion = numero;
+    }
+    @Override
+    public void bateria(int descarga){
+        porcentajedebateria -= descarga;
+    }
+    @Override
+    public void nombre(String nombre){
+        this.nombre = nombre;
+    }
+    @Override
+    public void id(int numero){
+        idnumero = numero;
+    }
+    public float getBateria(){
+        return porcentajedebateria;
+    }
+    @Override
+    protected void cargarBateria(){
+        for (int i = 0; i < 10; i++) 
+            System.out.print("\nCargando..." + (porcentajedebateria += 10) + "%");
+        System.out.print("\nCarga compelta...");
+    }
+    @Override
+    protected void setUtilidad(int numero){
+    }
+    @Override
+    protected int getUtilidad(){
+        return 0;
+    }
+}
