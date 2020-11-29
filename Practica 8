@@ -1,0 +1,181 @@
+import java.util.*;
+import java.io.IOException;
+
+public class Practica8{
+	public static void main(String[] args) throws IOException, InterruptedException{
+		Scanner sc = new Scanner(System.in);
+		int id = 0, cant = 0, i = 0;
+		float sueldo = 0, comision = 0, ventas = 0, horas = 0;
+		String nombre = " ";
+		Empleado x[] = new Empleado[10];
+		System.out.print("\n\nGenerador de nomina\n\n");
+		System.out.print("Cuantos empleados asalariados tiene: ");
+		cant = sc.nextInt();
+		new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		for(i = 0; i < cant; i++){
+			sc.nextLine();
+			System.out.print("Ingrese el nombre del empleado: ");
+				nombre = sc.nextLine();
+			System.out.print("\nIngrese el ID del empleado: ");
+				id = sc.nextInt();
+			System.out.print("\nIngrese el pago por semana: ");
+				sueldo = sc.nextFloat();
+			x[i] = new Empleado1(id, sueldo, nombre);
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		}
+		System.out.print("Cuantos empleados con pago por hora tiene: ");
+		cant = sc.nextInt();
+		cant += i;
+		new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		for(i = i; i < cant; i++){
+			sc.nextLine();
+			System.out.print("Ingrese el nombre del empleado: ");
+				nombre = sc.nextLine();
+			System.out.print("\nIngrese el ID del empleado: ");
+				id = sc.nextInt();
+			System.out.print("\nIngrese el pago por hora: ");
+				sueldo = sc.nextFloat();
+			System.out.print("\nIngrese la cantidad de horas que trabajo: ");
+				horas = sc.nextFloat();
+			x[i] = new Empleado2(id, sueldo, nombre, horas);
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		}
+		System.out.print("Cuantos empleados por comision tiene: ");
+		cant = sc.nextInt();
+		cant += i;
+		System.out.print("\nCuanto porcentaje reciben de comision: ");
+		comision = sc.nextFloat();
+		comision /= 100;
+		new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		for(i = i; i < cant; i++){
+			sc.nextLine();
+			System.out.print("Ingrese el nombre del empleado: ");
+				nombre = sc.nextLine();
+			System.out.print("\nIngrese el ID del empleado: ");
+				id = sc.nextInt();
+			System.out.print("\nIngrese la cantidad en dinero de ventas que realizo: ");
+				ventas = sc.nextFloat();
+			x[i] = new Empleado3(id, 0, nombre, comision, ventas);
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		}
+		System.out.print("Cuantos empleados por comision/sueldo tiene: ");
+		cant = sc.nextInt();
+		cant += i;
+		System.out.print("\nCuanto porcentaje reciben de comision: ");
+		comision = sc.nextFloat();
+		comision /= 100;
+		new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		for(i = i; i < cant; i++){
+			sc.nextLine();
+			System.out.print("Ingrese el nombre del empleado: ");
+				nombre = sc.nextLine();
+			System.out.print("\nIngrese el ID del empleado: ");
+				id = sc.nextInt();
+			System.out.print("\nIngrese el sueldo base: ");
+				sueldo = sc.nextFloat();
+			System.out.print("\nIngrese la cantidad en dinero de ventas que realizo: ");
+				ventas = sc.nextFloat();
+			x[i] = new Empleado3(id, sueldo, nombre, comision, ventas);
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		}
+		for(Empleado a: x){
+			if(a instanceof Empleado1){
+				((Empleado1) a).p();
+				((Empleado1) a).imprimirdatos();
+			}
+			if(a instanceof Empleado2){
+				((Empleado2) a).p();
+				((Empleado2) a).imprimirdatos();
+			}
+			if(a instanceof Empleado3){
+				((Empleado3) a).p();
+				((Empleado3) a).imprimirdatos();
+			}
+			if(a instanceof Empleado4){
+				((Empleado4) a).p();
+				((Empleado4) a).imprimirdatos();
+			}
+		}
+	}
+}
+
+public abstract class Empleado implements InterfaceSueldo{
+	int id;
+	float sueldo;
+	String nombre;
+	public Empleado(int id, float sueldo, String nombre){
+		this.id = id;
+		this.sueldo = sueldo;
+		this.nombre = nombre;
+	}
+	public void p(){}
+	public abstract void imprimirdatos();
+}
+
+public interface InterfaceSueldo{
+	public void p();
+}
+
+public class Empleado1 extends Empleado{
+	public Empleado1(int id, float sueldo, String nombre){
+		super(id, sueldo, nombre);
+	}
+	@Override
+	public void p(){
+		sueldo += 0;
+	}
+	@Override
+	public void imprimirdatos(){
+		System.out.print("\n\nEmpleado asalariado: " + nombre + "\nIdetificador: " + id + "\nSueldo: " + sueldo);
+	}
+}
+
+public class Empleado2 extends Empleado{
+	float horas, horasextra;
+	public Empleado2(int id, float sueldo, String nombre, float horas){
+		super(id, sueldo, nombre);
+		this.horas = horas;
+	}
+	@Override
+	public void p(){
+		sueldo = sueldo*horas;
+	}
+	public void imprimirdatos(){
+		System.out.print("\n\nEmpleado por horas: " + nombre + "\nIdetificador: " + id + "\nSueldo: " + sueldo);
+	}
+}
+
+public class Empleado3 extends Empleado{
+	float comision, ventas;
+	public Empleado3(int id, float sueldo, String nombre, float comision , float ventas){
+		super(id, sueldo, nombre);
+		this.comision = comision;
+		this.ventas = ventas;
+	}
+	public void p(){
+		sueldo = (ventas*comision);
+	}
+	@Override
+	public void imprimirdatos(){
+		System.out.print("\n\nEmpleado por comision: " + nombre + "\nIdetificador: " + id + "\nSueldo: " + sueldo);
+	}
+}
+
+public class Empleado4 extends Empleado{
+	float comision, ventas, extra = (1/10);
+	public Empleado4(int id, float sueldo, String nombre, float comision , float ventas){
+		super(id, sueldo, nombre);
+		this.comision = comision;
+		this.ventas = ventas;
+	}
+	@Override
+	public void p(){
+		sueldo += comision*ventas;
+		extra *= sueldo;
+		sueldo += extra;
+	}
+	@Override
+	public void imprimirdatos(){
+		System.out.print("\n\nEmpleado por asalariado por comsision: " + nombre + "\nIdetificador: " + id + "\nSueldo: " + sueldo);
+	}
+}
